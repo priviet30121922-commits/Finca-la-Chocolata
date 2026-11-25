@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es-VE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de Clientes | Finca La Chocolata</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-seccion {
+            min-height: calc(100vh - 140px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: linear-gradient(rgba(30, 18, 5, 0.7), rgba(30, 18, 5, 0.8)),
+                        url('cacao_imagen.jpeg') no-repeat center center;
+            background-size: cover;
+        }
+
+        .login-tarjeta {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 430px;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+            border-top: 6px solid #63460d;
+        }
+
+        .login-tarjeta h2 {
+            color: #3d2807;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+
+        .login-subtitulo {
+            text-align: center;
+            color: #5c4b3b;
+            font-size: 0.92rem;
+            margin-bottom: 24px;
+        }
+
+        .tabs-acceso {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d6c7b2;
+            background-color: #faf6f0;
+            color: #3d2807;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.activo {
+            background-color: #63460d;
+            color: #ffffff;
+            border-color: #63460d;
+        }
+
+        .campo-grupo {
+            margin-bottom: 16px;
+        }
+
+        .campo-grupo label {
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #3d2807;
+            margin-bottom: 6px;
+        }
+
+        .campo-grupo input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cbbba6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .campo-grupo input:focus {
+            outline: none;
+            border-color: #0c9924;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #0c9924;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 6px;
+        }
+
+        .btn-submit:hover {
+            background-color: #036b14;
+        }
+
+        .mensaje-estado {
+            margin-top: 15px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+        .mensaje-exito {
+            background-color: #e6f7ea;
+            color: #0b6e1c;
+            border: 1px solid #9ad9a6;
+        }
+
+        .mensaje-error {
+            background-color: #fdecea;
+            color: #a61d24;
+            border: 1px solid #f5b7b1;
+        }
+
+        .oculto {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-marca">
+            <span class="icono-cacao">🌱</span>
+            <strong>FINCA LA CHOCOLATA</strong>
+        </div>
+        <nav class="nav-enlaces">
+            <a href="index.html">← Volver al Inicio</a>
+        </nav>
+    </header>
+
+    <main class="login-seccion">
+        <div class="login-tarjeta">
+            <h2 id="titulo-formulario">Iniciar Sesión</h2>
+            <p class="login-subtitulo">Accede o regístrate para gestionar tus pedidos de cacao</p>
+
+            <div class="tabs-acceso">
+                <button type="button" id="tab-login" class="tab-btn activo" onclick="mostrarModo('login')">Iniciar Sesión</button>
+                <button type="button" id="tab-registro" class="tab-btn" onclick="mostrarModo('registro')">Registrarse</button>
+            </div>
+
+            <!-- Formulario de Inicio de Sesión -->
+            <form id="form-login" onsubmit="iniciarSesion(event)">
+                <div class="campo-grupo">
+                    <label for="login-correo">Correo electrónico</label>
+                    <input type="email" id="login-correo" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="login-clave">Contraseña</label>
+                    <input type="password" id="login-clave" placeholder="Tu contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">Entrar</button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="form-registro" class="oculto" onsubmit="registrarUsuario(event)">
+                <div class="campo-grupo">
+                    <label for="reg-correo">Correo electrónico</label>
+                    <input type="email" id="reg-correo" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="reg-clave">Contraseña (mínimo 6 caracteres)</label>
+                    <input type="password" id="reg-clave" minlength="6" placeholder="Crea una contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">Crear Cuenta</button>
+            </form>
+
+            <div id="mensaje" class="mensaje-estado"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Finca La Chocolata - San Juan de Colón, Estado Táchira.</p>
+    </footer>
+
+    <script>
+        function mostrarModo(modo) {
+            const formLogin = document.getElementById('form-login');
+            const formRegistro = document.getElementById('form-registro');
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegistro = document.getElementById('tab-registro');
+            const titulo = document.getElementById('titulo-formulario');
+            const mensaje = document.getElementById('mensaje');
+
+            mensaje.style.display = 'none';
+
+            if (modo === 'login') {
+                formLogin.classList.remove('oculto');
+                formRegistro.classList.add('oculto');
+                tabLogin.classList.add('activo');
+                tabRegistro.classList.remove('activo');
+                titulo.textContent = 'Iniciar Sesión';
+            } else {
+                formRegistro.classList.remove('oculto');
+                formLogin.classList.add('oculto');
+                tabRegistro.classList.add('activo');
+                tabLogin.classList.remove('activo');
+                titulo.textContent = 'Registro de Cliente';
+            }
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            const caja = document.getElementById('mensaje');
+            caja.textContent = texto;
+            caja.className = 'mensaje-estado ' + (tipo === 'exito' ? 'mensaje-exito' : 'mensaje-error');
+            caja.style.display = 'block';
+        }
+
+        function registrarUsuario(evento) {
+            evento.preventDefault();
+
+            const correo = document.getElementById('reg-correo').value.trim().toLowerCase();
+            const clave = document.getElementById('reg-clave').value;
+
+            const usuarios = JSON.parse(localStorage.getItem('usuarios_chocolata')) || [];
+
+            const existe = usuarios.some(u => u.correo === correo);
+            if (existe) {
+                mostrarMensaje('Este correo ya está registrado. Inicia sesión.', 'error');
+                return;
+            }
+
+            usuarios.push({ correo, clave });
+            localStorage.setItem('usuarios_chocolata', JSON.stringify(usuarios));
+
+            mostrarMensaje('¡Registro exitoso! Ahora puedes iniciar sesión.', 'exito');
+            document.getElementById('form-registro').reset();
+            setTimeout(() => mostrarModo('login'), 1500);
+        }
+
+        function iniciarSesion(evento) {
+            evento.preventDefault();
+
+            const correo = document.getElementById('login-correo').value.trim().toLowerCase();
+            const clave = document.getElementById('login-clave').value;
+
+            const usuarios = JSON.parse(localStorage.getItem('usuarios_chocolata')) || [];
+            const usuarioValido = usuarios.find(u => u.correo === correo && u.clave === clave);
+
+            if (usuarioValido) {
+                localStorage.setItem('sesion_activa_chocolata', JSON.stringify(usuarioValido));
+                mostrarMensaje('Bienvenido, ' + usuarioValido.correo + '. Redirigiendo...', 'exito');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1200);
+            } else {
+                mostrarMensaje('Correo o contraseña incorrectos.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
